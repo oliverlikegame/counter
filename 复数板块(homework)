@@ -29,7 +29,7 @@ int main()
 		cout<<"依次输入两组虚数a+bi,c+d*i中的a,b,c,d以空格隔开"<<endl;
 		cin>>x.re>>x.im>>y.re>>y.im;
 		s.im=x.re*y.im+x.im*y.re;//(a+bi)*(c+di)==ac-bd+(ad+bc)*i   x*y==s 定义虚数乘法
-		s.im=x.re*y.re-x.im*y.im;
+		s.re=x.re*y.re-x.im*y.im;
 		cout<<"("<<x.re<<"+"<<x.im<<")*i+("<<y.re<<"+"<<y.im<<")=="<<s.re<<"+"<<s.im<<"*i";
 	}
 	else if(panduan==3)
