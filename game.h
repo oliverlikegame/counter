@@ -118,13 +118,13 @@ gamer *readfile(){
 } 
 
 struct gamer login(){
-	int result=0;//保存judgeid返回值，记录account类型 若account=0 怎说明登录未通过
+	int result=4;//保存judgeid返回值，记录account类型 若result=4 怎说明登录未通过  1 账户不存在  2 密码正确  0 密码错误
 	int time=5;//time为输入密码的次数 超出锁定系统
 	int menu;
 	char account[20];
 	struct gamer gamer1;
-	do{  
-		do{  //防止键入其他字符
+	do{  //如果
+		do{  //防止键入其他字符 控制输入字符为1和2
 		cout<<endl<<"sign up(enter 1) or sign in(enter 2)?"<<endl;
 		
 		cin>>menu;
@@ -140,7 +140,7 @@ struct gamer login(){
 			 head=readfile();
 			 p=head;
 			 while(p!=NULL){
-			 if(strcmp(p->username,account)==0){//验证账户是否存在
+			 if(strcmp(p->username,account)==0){//循环用来验证账户是否存在
 				cout<<endl<<"password:";
 				cin>>password;
 				if(strcmp(p->pwd,password)==0){
@@ -151,9 +151,11 @@ struct gamer login(){
 				else
 					result=0;  // 密码错误
 			 }
-		  	 else {result=1;} //账户不存在
 			 p=p->next;
 			 }
+			 if(result==4){//循环结束result的值4没有被改变说明指定账户没有被找到
+						result=1;
+					}
 			if(result==0){//0 密码错误
  				time--;cout<<endl<<"wrong password! you only have "<<time<<" times to try";
 				cout<<endl<<"click Enter to continue..."<<endl;
@@ -187,11 +189,12 @@ struct gamer login(){
 								else
 									result=0;  // 密码错误
 							}
-							else 
-							{result=1;} //账户不存在
+						
 							p=p->next;
 					 }
-	    
+					if(result==4){//循环结束result的值没有被改变说明指定账户没有被找到
+						result=1;
+					}
 				 }
 				if(menu1==2){
 					gamer1=signUp();
@@ -208,7 +211,7 @@ struct gamer login(){
 				 cin.get();cin.get();
 		}
 		}while(menu!=1&&menu!=2) ;  
-	}while(result==0);//result 0 登录未通过
+	}while(result==4);//result 4 登录未通过
 
 }
  
