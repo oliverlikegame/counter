@@ -28,7 +28,7 @@ int main() {
 
 	int result=0;//保存judgeid返回值，记录account类型 若account=0 怎说明登录未通过
 	int time=5;//time为输入密码的次数 超出锁定系统
-	int menu;
+	int menu,choose=0;//choose用来记录account身份
 	char account[20];
 	struct gamer gamer1;
 	do{  
@@ -48,6 +48,8 @@ int main() {
 			result=judgeid(account);
 			if(result==0){//0 密码错误
  				time--;cout<<"wrong password! you only have "<<time<<" times to try";
+				cout<<"click Enter to continue..."<<endl;
+		cin.get();cin.get();
 				
 			if(time==0){
 				cout<<"you run out of your opportunities，the system is lock";
@@ -69,10 +71,16 @@ int main() {
 					gamer1=signUp();
 				}
 			if(result==2){//2 密码正确
-				result=3;//3 玩家
+				choose=3;//3 玩家
+				break;
 			}
 			}
-		}cout<<"menu is not exist！！"<<endl;
+		}
+		if(menu!=1&&menu!=2){
+			cout<<"menu is not exist！！"<<endl;
+			cout<<"click Enter to continue..."<<endl;
+				 cin.get();cin.get();
+		}
 		}while(menu!=1&&menu!=2) ;  
 	}
 	while(result==0);//result 0 登录未通过
@@ -88,11 +96,11 @@ int main() {
 
 		}
 	}
-	if(result==2){			//管理员 gamemaster
+	if(choose==2){			//管理员 gamemaster
 		
 	
 	}
-	if(result==3){         //玩家 gamer
+	if(choose==3){         //玩家 gamer
 	
 
 		 cout<<"Welcome to this world "<<gamer1.username<<endl;
