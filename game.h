@@ -55,7 +55,7 @@ struct  gamer signUp(   ){
 	cin>>pwd2;
 		if(strcmp(pwd1,pwd2)==0){
 			strcpy(gamer1.pwd,pwd2);
-			cout<<endl<<"success sign up!!"<<endl;
+			cout<<endl<<"success sign up!!"<<endl<<"now ,you have your own account in VIRTUSL ,have a good time! "<<endl<<"enjoy!"<<endl;
 			break;
 		}else cout<<endl<<"wrong password try again!!"<<endl;
 	}                         //初始化玩家属性
@@ -88,14 +88,7 @@ gamer *readfile(){
             if(c=='\n') lines++;      
         fclose(fp);                   //关闭文件  
     }      
-    fp=fopen("d:\\characterData.txt", "r"); //打开d盘根目录下的student.txt文件  
-    if(fp==NULL)      
-    {      
-         cout<<"no account please sign up!"<<endl;
-		cout<<"click Enter to continue..."<<endl;
-		cin.get();cin.get();
-		signUp(); 
-    }      
+    fp=fopen("d:\\characterData.txt", "r"); //打开d盘根目录下的characterData.txt文件  
     for(i=1;i<lines;i++)             //循环读取文件中的内容 并需要将其数据添加到链表中  
     {      
         if(i==1)                      //第一个链表节点      
@@ -120,23 +113,32 @@ gamer *readfile(){
 struct gamer login(){
 	int result=4;//保存judgeid返回值，记录account类型 若result=4 怎说明登录未通过  1 账户不存在  2 密码正确  0 密码错误
 	int time=5;//time为输入密码的次数 超出锁定系统
-	int menu;
+	char menu[10],one[10]={"1"},two[10]={"2"};
 	char account[20];
 	struct gamer gamer1;
 	do{  //如果
 		do{  //防止键入其他字符 控制输入字符为1和2
+			FILE *fp;
+			 fp=fopen("d:\\characterData.txt", "r"); //打开d盘根目录下的characterData.txt文件  
+				if(fp==NULL){
+					cout<<"no account in system please sign up!"<<endl;
+					cout<<"click Enter to continue..."<<endl;
+					cin.get();cin.get();
+					cout<<"now is sign up:"<<endl;
+					signUp();
+				} 
 		cout<<endl<<"sign up(enter 1) or sign in(enter 2)?"<<endl;
 		
 		cin>>menu;
-		if(menu==1){
+		if(strcmp(menu,one)==0){
 			 gamer1=signUp();
 		}
-		if(menu==2){
+		if(strcmp(menu,two)==0){
 			while(time>0){
 			cout<<endl<<"Please input your account"<<endl;
 			cin>>account;
-			    char password[20]; 
-			gamer *p,*head;     
+			    char password[20];    
+			 gamer *p,*head;     
 			 head=readfile();
 			 p=head;
 			 while(p!=NULL){
@@ -170,9 +172,9 @@ struct gamer login(){
 				 cout<<"click Enter to continue..."<<endl;
 				 cin.get();cin.get();
 				 cout<<endl<<"please try again(1) or sign up(2)！";
-				 int menu1;
+				char menu1[10];
 				 cin>>menu1;
-				 if(menu1==1){
+				 if(strcmp(menu1,one)==0){
 					 cout<<"account :"<<endl;
 					 cin>>account;
 					 
@@ -196,7 +198,7 @@ struct gamer login(){
 						result=1;
 					}
 				 }
-				if(menu1==2){
+				if(strcmp(menu,two)==0){
 					gamer1=signUp();
 				}
 			}
@@ -205,13 +207,12 @@ struct gamer login(){
 			}
 			}
 		}
-		if(menu!=1&&menu!=2){
+		if(strcmp(menu,one)==1&&strcmp(menu,two)==1){
 			cout<<endl<<"menu is not exist！！"<<endl;
 			cout<<"click Enter to continue..."<<endl;
 				 cin.get();cin.get();
 		}
-		}while(menu!=1&&menu!=2) ;  
+		}while(strcmp(menu,one)==1&&strcmp(menu,two)==1) ;  
 	}while(result==4);//result 4 登录未通过
 
 }
- 
