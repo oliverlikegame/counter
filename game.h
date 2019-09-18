@@ -1,4 +1,5 @@
 #include<string.h>
+#include<Windows.h>
 #include<iostream>
 using namespace std;
 
@@ -38,42 +39,11 @@ struct gamer{
 	int type;//账户类型
 	struct gamer * next;
 };
-/**
-*注册用户信息，只有第三级用户可被注册，即玩家用户，
-*初始化角色属性
-*管理员(二级)和创始者账号(一级)不可再本程序内注册
-*/
-struct  gamer signUp(   ){
-	char pwd1[20],pwd2[20];//注册密码需要输入两次
-	gamer gamer1;
-	cout<<endl<<"what is your name?"<<endl;
-	cin>>gamer1.username;
-	while(1){
-	cout<<endl<<"        password:";
-	cin>>pwd1;
-	cout<<"confirm password:";
-	cin>>pwd2;
-		if(strcmp(pwd1,pwd2)==0){
-			strcpy(gamer1.pwd,pwd2);
-			cout<<endl<<"success sign up!!"<<endl<<"now ,you have your own account in VIRTUSL ,have a good time! "<<endl<<"enjoy!"<<endl;
-			break;
-		}else cout<<endl<<"wrong password try again!!"<<endl;
-	}                         //初始化玩家属性
-	gamer1.ATK=1;            //初始攻击
-	gamer1.blood=100;       //初始血量
-	gamer1.DEF=10;         //初始防御
-	gamer1.EXP=0;         //初始经验
-	gamer1.level=1;      //初始等级
-	gamer1.type=3;      //类型为玩家（注册只能注册三级账户即玩家
-  	FILE *fp;    //将玩家数据存储在 “characterData.txt” 中  
-	fp=fopen("d:\\characterData.txt","a");
-	fprintf(fp,"%d %d %d %d %d %s %s %d\n",gamer1.ATK,gamer1.blood,gamer1.DEF,gamer1.EXP,gamer1.level,gamer1.pwd,gamer1.username,gamer1.type);//写入文件      
-        fclose(fp);  //释放指针 关闭文件    
-	return gamer1;
-};
+
  /**
 *将文档读取到链表中
 */   
+
 gamer *readfile(){
  
 	gamer *head,*tail,*tmp;     
@@ -110,6 +80,55 @@ gamer *readfile(){
     return head;      
 } 
 
+/**
+*注册用户信息，只有第三级用户可被注册，即玩家用户，
+*初始化角色属性
+*管理员(二级)和创始者账号(一级)不可再本程序内注册
+*/
+struct  gamer signUp(   ){
+	char pwd1[20],pwd2[20];//注册密码需要输入两次
+	gamer gamer1;
+	while(1){
+	cout<<endl<<"what is your name?"<<endl;
+	cin>>gamer1.username;
+	gamer * p;
+	p=readfile();
+	int judgenumber=1;
+	while(p!=NULL){
+		if(strcmp(p->username,gamer1.username)==0){
+			cout<<gamer1.username<<" was exist ,please use other name"<<endl;
+			judgenumber=2;
+			break;
+		}
+		p=p->next;
+	}
+	if(judgenumber==1)
+		break;
+
+	}
+	while(1){
+	cout<<endl<<"        password:";
+	cin>>pwd1;
+	cout<<"confirm password:";
+	cin>>pwd2;
+		if(strcmp(pwd1,pwd2)==0){
+			strcpy(gamer1.pwd,pwd2);
+			cout<<endl<<"success sign up!!"<<endl<<"now ,you have your own account in VIRTUSL ,have a good time! "<<endl<<"enjoy!"<<endl;
+			break;
+		}else cout<<endl<<"wrong password try again!!"<<endl;
+	}                         //初始化玩家属性
+	gamer1.ATK=1;            //初始攻击
+	gamer1.blood=100;       //初始血量
+	gamer1.DEF=10;         //初始防御
+	gamer1.EXP=0;         //初始经验
+	gamer1.level=1;      //初始等级
+	gamer1.type=3;      //类型为玩家（注册只能注册三级账户即玩家
+  	FILE *fp;    //将玩家数据存储在 “characterData.txt” 中  
+	fp=fopen("d:\\characterData.txt","a");
+	fprintf(fp,"%d %d %d %d %d %s %s %d\n",gamer1.ATK,gamer1.blood,gamer1.DEF,gamer1.EXP,gamer1.level,gamer1.pwd,gamer1.username,gamer1.type);//写入文件      
+        fclose(fp);  //释放指针 关闭文件    
+	return gamer1;
+};
 struct gamer login(){
 	int result=4;//保存judgeid返回值，记录account类型 若result=4 怎说明登录未通过  1 账户不存在  2 密码正确  0 密码错误
 	int time=5;//time为输入密码的次数 超出锁定系统
@@ -118,7 +137,7 @@ struct gamer login(){
 	struct gamer gamer1;
 	do{  //如果
 		do{  //防止键入其他字符 控制输入字符为1和2
-			FILE *fp;
+			FILE *fp;         //用户进行操作之前检测计算机上是否存在注册信息
 			 fp=fopen("d:\\characterData.txt", "r"); //打开d盘根目录下的characterData.txt文件  
 				if(fp==NULL){
 					cout<<"no account in system please sign up!"<<endl;
@@ -216,3 +235,249 @@ struct gamer login(){
 	}while(result==4);//result 4 登录未通过
 
 }
+extern void loading(){
+	system("cls");
+	for(int i=1;i<4;i++){
+				 cout<<"the world is building";Sleep(0.5*1000);
+				 cout<<".";Sleep(0.5*1000);
+				 cout<<".";Sleep(0.5*1000);
+				 cout<<".";Sleep(1*1000);
+				 system("cls");
+	 }
+}
+void man(){
+	//裸装
+	char bareMan[32][140]={
+	"                                    * * *                                                                                ",
+	"                                  *       *                                                                              ",
+	"                                  * M  M  *                                                                              ",
+	"                                  *       *                                                                              ",
+	"                                  *  0    *                                                                              ",
+	"                                   *  *  *                                                                               ",
+	"                        * * * *  *          *  * * *                                                                     ",
+	"                      *                              *                                                                   ",
+	"                     *                                *                                                                  ",
+	"                    *     *                     *      *                                                                 ",
+	"                   *     * *                    * *     *                                                                ",
+	"                  *     *  *                    *  *     *                                                               ",
+	"                 *     *   *                    *   *     *                                                              ",
+	"                *     *    *                    *    *     *                                                             ",
+	"               *     *     *                    *     *     *                                                            ",
+	"              *     *      *                    *      *      *                                                          ",
+	"             *     *       *                    *       *       *                                                        ",
+	"            *     *        *                    *         *       *                                                      ",
+	"               *           *          *         *            *  *                                                        ",
+	"                           *         * *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        "
+	};
+/*
+	//头盔
+	char hatMan[35][140]={
+	"                                *           *                                                                            ",
+	"                               **           **                                                                           ",
+	"                              ***           ***                                                                          ",
+	"                             *****  * * *  *****                                                                         ",
+	"                             ****** ----- ******                                                                         ",
+	"                              ***** ----- *****                                                                          ",
+	"                                *** ----- ***                                                                            ",
+	"                                  * ----- *                                                                              ",
+	"                        * * * *  *          *  * * *                                                                     ",
+	"                      *                              *                                                                   ",
+	"                     *                                *                                                                  ",
+	"                    *     *                     *      *                                                                 ",
+	"                   *     * *                    * *     *                                                                ",
+	"                  *     *  *                    *  *     *                                                               ",
+	"                 *     *   *                    *   *     *                                                              ",
+	"                *     *    *                    *    *     *                                                             ",
+	"               *     *     *                    *     *     *                                                            ",
+	"              *     *      *                    *      *      *                                                          ",
+	"             *     *       *                    *       *       *                                                        ",
+	"            *     *        *                    *         *       *                                                      ",
+	"               *           *          *         *            *  *                                                        ",
+	"                           *         * *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	};
+	//盔甲
+	char suitMan[35][140]={
+	"                                                                                                                         ",
+	"                                                                                                                         ",
+	"                                                                                                                         ",
+	"                                    * * *                                                                                ",
+	"                                  *       *                                                                              ",
+	"                   *              * M  M  *               *                                                              ",
+	"                  **              *       *               **                                                             ",
+	"                 ***     * *      *  O    *    *    *    ***                                                             ",
+	"                 **** * ***** *    *  *  *    * ******* ****                                                             ",
+	"                  ***** * * * *  *       *  *  * * ** *****                                                              ",
+	"                    *  *      *    *   *    *     *  ** ****                                                             ",
+	"                  *****  *   *       *       *     *  * *****                                                            ",
+	"                 ****   * * *  *    * *     *   * *   * * ****                                                           ",
+	"                  *** *    *     * * U *  *     *  * *  * ***                                                            ",
+	"                  *     *  *        * *         * *      *                                                               ",
+	"                 *     *  *       *  *  *        *  *     *                                                              ",
+	"                *     *          *       *           *     *                                                             ",
+	"               *     *   *     *           *      *   *     *                                                            ",
+	"              *     *        *               *         *     *                                                           ",
+	"             *     *     * *                    * *     *      *                                                         ",
+	"            *     *        *                    *        *       *                                                       ",
+	"           *     *         *          *         *          *       *                                                     ",
+	"             *             *         * *        *             *   *                                                      ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        "
+	};
+	//裤子
+	char  pantsMan[35][140]={
+	"                                                                                                                         ",
+	"                                                                                                                         ",
+	"                                                                                                                         ",
+	"                                    * * *                                                                                ",
+	"                                  *       *                                                                              ",
+	"                                  * M  M  *                                                                              ",
+	"                                  *       *                                                                              ",
+	"                                  *  0    *                                                                              ",
+	"                                   *  *  *                                                                               ",
+	"                        * * * *  *          *  * * *                                                                     ",
+	"                      *                              *                                                                   ",
+	"                     *                                *                                                                  ",
+	"                    *     *                     *      *                                                                 ",
+	"                   *     * *                    * *     *                                                                ",
+	"                  *     *  *                    *  *     *                                                               ",
+	"                 *     *   *                    *   *     *                                                              ",
+	"                *     *    *                    *    *     *                                                             ",
+	"               *     *     *                    *     *     *                                                            ",
+	"              *     *      *      *      *      *      *      *                                                          ",
+	"             *     *       *      *             *   *   *       *                                                        ",
+	"            *     *        *       *      *               *       *                                                      ",
+	"           *     *     *     *   |  *  *   |  *      *      *  *                                                         ",
+	"              *                  |  *  *   |                                                                             ",
+	"                      *     *    |---------|   *      *                                                                  ",
+	"                           * *   |         |                                                                             ",
+	"                     *   * * *   |---------|    * *    *                                                                 ",
+	"                           *  *  |         |  * *                                                                        ",
+	"                    *  *   *   *  --------- *   *   *  *                                                                 ",
+	"                           *     *   *   *      *                                                                        ",
+	"                      *    *       *    *       *   *                                                                    ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                                                                                                                         ",
+	"                                                                                                                         "
+	};
+	//武器
+	char armsMan[35][140]={
+	"                                                                                                                         ",
+	"                                                                                                                         ",
+	"                                                                                                                         ",
+	"                                    * * *                                                                                ",
+	"                                  *       *                                                                              ",
+	"                                  * M  M  *                                                                      O       ",
+	"                                  *       *                                                                  O           ",
+	"                                  *  0    *                                                              O    O          ",
+	"                                   *  *  *                                                           O    O              ",
+	"                        * * * *  *          *  * * *                                             O    O                  ",
+	"                      *                              *                                       O    O                      ",
+	"                     *                                *                                  O    O                          ",
+	"                    *     *                     *      *                             O    O                              ",
+	"                   *     * *                    * *     *                        O    O                                  ",
+	"                  *     *  *                    *  *     *                   O    O                                      ",
+	"                 *     *   *                    *   *     *              O    O                                          ",
+	"                *     *    *                    *    *     *         O    O                                              ",
+	"               *     *     *                    *     *     *    O    O                                                  ",
+	"              *     *      *                    *      *      *   O                                                      ",
+	"             *     *       *                    *       *       *                                                        ",
+	"            *     *        *                    *    O    *       *                                                      ",
+	"               *           *          *         *O    O      *  *                                                        ",
+	"                           *         * *        * O                                                                      ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *O *        *                                                                        ",
+	"                           *        * O*        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                         O *        *  *        *                                                                        ",
+	"                     O    O*        *  *        *                                                                        ",
+	"                 O    O    *        *  *        *                                                                        ",
+	"             O    O        *        *  *        *                                                                        ",
+	"              O            *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        ",
+	"                           *        *  *        *                                                                        "
+	};
+	*/
+//头盔上衣下衣武器
+	char allMan[35][140]={
+	"                                *           *                                                                            ",
+	"                               **           **                                                                           ",
+	"                              ***           ***                                                                          ",
+	"                             *****  * * *  *****                                                                         ",
+	"                             ****** ----- ******                                                                         ",         
+	"                   *          ***** ----- *****           *                                                              ",
+	"                  **            *** ----- ***             **                                                      0      ",
+	"                 ***     * *      * ----- *    *    *    ***                                                  0          ", 
+	"                 **** * ***** *  * *  *  * ** * ******* ****                                              0    0         ",
+	"                  ***** * * * *  *       *  *  * * ** *****                                           O    0             ",
+	"                    *  *      *    *   *    *     *  ** ****                                      O    O                 ",
+	"                  *****  *   *       *       *     *  * *****                                 0    O                     ",
+	"                 ****   * * *  *    * *     *   * *   * * ****                            0    O                         ",
+	"                  *** *    *     * * U *  *     *  * *  * ***                         0    O                             ",
+	"                  *     *  *        * *         * *      *                        0    O                                 ",
+	"                 *     *  *       *  *  *        *  *     *                   0    O                                     ",
+	"                *     *          *       *           *     *              0    O                                         ",
+	"               *     *   *     *           *      *   *     *         O    O                                             ",
+	"              *     *        *    *     *    *         *     *    O    O                                                 ",
+	"             *     *     * *         *          * *     *      *   O                                                     ",
+	"            *     *        *      *      *      *        *       *                                                       ",
+	"              *          *      *             *   *    0   *       *                                                     ",
+	"                           *       *      *             0    *  *                                                        ",
+	"                       *     *   |  *  *   |  *      *                                                                   ",
+	"                                 |  *  *   |                                                                             ",
+	"                      *     *    |---------|   *      *                                                                  ",
+	"                           * *   |         |                                                                             ",
+	"                     *   * * *   |---------|    * *    *                                                                 ",
+	"                           *  *  |         |  * *                                                                        ",
+	"                    *  *   *   *  --------- *   *   *  *                                                                 ",
+	"                           *     *   *   *      *                                                                        ",
+	"                   O  *    *       *    *       *   *                                                                    ",
+	"               O    O      *        *  *        *                                                                        ",
+	"           O    O          *        *  *        *                                                                        ",
+	"            O              *        *  *        *                                                                        "
+	};
+
+
+}
+
+
+
+
+
+
