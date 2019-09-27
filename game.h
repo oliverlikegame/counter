@@ -121,7 +121,6 @@ gamer *readfile(){
     return head;      
 } 
 
-
 extern void fullScreen(){
 	/*
 	读写文件
@@ -244,6 +243,12 @@ extern void collectEnter(){//收集Enter 装饰用的
 	cout<<"click Enter to continue..."<<endl;
 	cin.get();cin.get();
 	
+}
+extern void slowWord(string word){
+	for(int i=0;i<word.length();i++){
+		cout<<word[i];
+		Sleep(100);
+	}
 }
 
 /**
