@@ -120,7 +120,7 @@ int pic() {
         hdcBits = CreateCompatibleDC(hdc);
         GetObject (hbm, sizeof(BITMAP), &bm);
         SelectObject(hdcBits,hbm);
-        Sleep(200);
+        Sleep(100);
 		BitBlt(hdc,100,100,1980,1080,hdcBits,0,0,SRCCOPY); //
         DeleteDC(hdcBits);
         DeleteObject(hbm);
