@@ -62,10 +62,14 @@ int main() {
 		cout<<endl;
 		collectEnter();
 		loading("The World is building");
+		slowWord("tip:enter to start game,Esc to start menu");
+		system("cls");
 		 while(1){
-			 menu(&gamer1);//菜单图案以及功能
-			
-
+			 char menu3=getchar();
+			 if(menu3==27);//27 Esc ASCII
+				menu(&gamer1);//菜单图案以及功能
+			 if(menu3==10);//10 回车 ASCII
+				playGmae(&gamer1);
 
 
 
