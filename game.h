@@ -254,9 +254,9 @@ extern void slowWord(string word){
 /**
 *注册用户信息，只有第三级用户可被注册，即玩家用户，
 *初始化角色属性
-*管理员(二级)和创始者账号(一级)不可再本程序内注册
+*管理员(二级)和创始者账号(一级)不可直接注册，达成某种条件(没效果好，通关怎么样)即可注册
 */
-struct  gamer signUp(   ){
+struct gamer signUp(){
 	cmdResolution("on");
 	char pwd1[20],pwd2[20];//注册密码需要输入两次
 	gamer gamer1;
@@ -442,7 +442,12 @@ struct gamer login(){
 	}while(result==4);//result 4 登录未通过
 
 }
+extern void playGmae(gamer * gamer1){
 
+
+
+
+}
 /*
    HWND GetConsoleHwnd(void)
    {
