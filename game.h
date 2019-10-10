@@ -3,9 +3,12 @@
 #include<iostream>
 #include<io.h>
 #include<fstream>
+#include"story.h"
 using namespace std;
-extern char one[10]={"1"},two[10]={"2"},three[10]={"3"},four[10]={"4"},five[10]={"5"},six[10]={"6"};
-HANDLE handle;
+extern char zero[10]={"0"},one[10]={"1"},two[10]={"2"},three[10]={"3"},four[10]={"4"},five[10]={"5"},six[10]={"6"};
+HANDLE handle; 
+
+
 /**
 *三种账号类型
 */
@@ -42,7 +45,7 @@ struct gamer{
 	int type;//账户类型
 	struct gamer * next;
 };
-extern void setWordRed(){
+extern void setWordRed(){//重要颜色
 	handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(handle,
 							        FOREGROUND_RED|
@@ -55,14 +58,14 @@ extern void setWordWhite(){
                                     FOREGROUND_BLUE|
 									FOREGROUND_INTENSITY);
 }
-extern void setWordCyan(){
+extern void setWordCyan(){//系统提示色
 	handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(handle,              //青（蓝+绿）
 							        FOREGROUND_GREEN|
 							        FOREGROUND_BLUE|
 						      	    FOREGROUND_INTENSITY);
 }
-extern void setWordBlue(){
+extern void setWordBlue(){//玩家输入色
 	handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(handle, FOREGROUND_BLUE|//蓝色
 									FOREGROUND_INTENSITY);
@@ -78,7 +81,6 @@ extern void setWordYellow(){
                                     FOREGROUND_GREEN |  
 									FOREGROUND_INTENSITY);
 }
-
 
  /**
 *将文档读取到链表中
@@ -190,7 +192,7 @@ extern void loading(char word[20]){
 	 }
 }
 
-extern void menu(gamer *gamer1){
+extern void gameMenu(gamer *gamer1){
 	cout<<"                                              *    *                                                                                "<<endl;
 	cout<<"                                          *           *                                                                             "<<endl;
 	cout<<"                                                                                                                                    "<<endl;
@@ -257,7 +259,7 @@ extern void slowWord(string word){
 *管理员(二级)和创始者账号(一级)不可直接注册，达成某种条件(没效果好，通关怎么样)即可注册
 */
 struct gamer signUp(){
-	cmdResolution("on");
+	//cmdResolution("on");
 	char pwd1[20],pwd2[20];//注册密码需要输入两次
 	gamer gamer1;
 	while(1){
@@ -308,14 +310,15 @@ struct gamer signUp(){
 	return gamer1;
 };
 struct gamer login(){
-	int result=4;//保存judgeid返回值，记录account类型 若result=4 怎说明登录未通过  1 账户不存在  2 密码正确  0 密码错误
-	int time=5;//time为输入密码的次数 超出锁定系统
-	char menu[10];
+	int result=4;               //保存judgeid返回值，记录account类型 若result=4 怎说明登录未通过  1 账户不存在  2 密码正确  0 密码错误
+	int time=5;                 //time为输入密码的次数 超出锁定系统
+	
 	char account[20];
 	struct gamer gamer1;
-	do{  //如果
-		do{  //防止键入其他字符 控制输入字符为1和2
-			FILE *fp=NULL;         //用户进行操作之前检测计算机上是否存在注册信息
+	do{                                                            //循环1开始
+		char menu[10];
+		do{                     //防止键入其他字符 控制输入字符为1和2//循环2开始       
+			FILE *fp=NULL;      //用户进行操作之前检测计算机上是否存在注册信息
 			 fp=fopen("d:\\characterData.txt", "r"); //打开d盘根目录下的characterData.txt文件  
 				if(fp==NULL){
 					cout<<"no account in system please sign up!"<<endl;
@@ -323,7 +326,8 @@ struct gamer login(){
 					god godRoot={"root","iamgod777",99,2147483646,2147483646,2147483646,2147483646,1,NULL};
 					fp=fopen("d:\\characterData.txt", "w");
 					fprintf(fp,"%d %d %d %d %d %s %s %d\n",godRoot.ATK,godRoot.blood,godRoot.DEF,godRoot.EXP,godRoot.level,godRoot.pwd,godRoot.username,godRoot.type);//写入文件      
-					 fclose(fp);  //释放指针 关闭文件    
+					 fclose(fp);//释放指针 关闭文件 
+					 fp=NULL;
 					cout<<"now is sign up:"<<endl;
 					signUp();
 				} 
@@ -335,35 +339,36 @@ struct gamer login(){
 			 gamer1=signUp();
 		}
 		if(strcmp(menu,two)==0){
-			while(time>0){
+			int jump=0;
+			while(time>0){                                         //循环3开始
 			cout<<endl<<"Please input your account"<<endl;
 			setWordBlue();
 			cin>>account;
 			setWordWhite();
-			    char password[20];    
+			char password[20];    
 			 gamer *p,*head;     
 			 head=readfile();
 			 p=head;
-			 while(p!=NULL){
+			 while(p!=NULL){    //小循环一页能看完的就不注释了
 			 if(strcmp(p->username,account)==0){//循环用来验证账户是否存在
 				cout<<endl<<"password:";
 				setWordBlue();
 				cin>>password;
 				setWordWhite();
 				if(strcmp(p->pwd,password)==0){
-					result=2;  // 密码正确   找到了数据库中对应的数据赋值给gamer1在有函数login()将账户返回
+					result=2;   // 密码正确   找到了数据库中对应的数据赋值给gamer1然后函数login()记录一个值然后凭借这个值将会把账户返回
 					gamer1.ATK=p->ATK;gamer1.blood=p->blood;gamer1.DEF=p->DEF;gamer1.EXP=p->EXP;gamer1.level=p->level;gamer1.next=p->next;strcpy(gamer1.pwd,p->pwd);gamer1.type=p->type;strcpy(gamer1.username,p->username);
 
 				}
 				else
-					result=0;  // 密码错误
+					result=0;   // 密码错误
 			 }
 			 p=p->next;
 			 }
-			 if(result==4){//循环结束result的值4没有被改变说明指定账户没有被找到
+			 if(result==4){     //循环结束result的值4没有被改变说明指定账户没有被找到
 						result=1;
 					}
-			if(result==0){//0 密码错误
+			if(result==0){      //0 密码错误
 				setWordRed();
  				time--;cout<<endl<<"Wrong Password!! you only have "<<time<<" times to try";
 				setWordWhite();
@@ -373,41 +378,64 @@ struct gamer login(){
 				cout<<endl<<"you run out of your opportunities，the system is lock";
 				exit(0);}
 			}
-			if(result==1){//1 账户不存在
+			if(result==1){      //1 账户不存在
 				cout<<endl<<"account is not exist!"<<endl;
 				 collectEnter();
-				 cout<<endl<<"please try again(1) or sign up(2)！";
+				 cout<<endl<<"please try again(1) or sign up(2)！"<<endl;
 				char menu1[10];
+				do{                                                //循环5开始
 				 cin>>menu1;
 				 if(strcmp(menu1,one)==0){
-					 cout<<"account :"<<endl;
+					 cout<<"account :";
+					 setWordBlue();
 					 cin>>account;
-					 
-					    head=readfile();
+					 setWordWhite();
+					 head=readfile();
 					 p=head;
 					while(p!=NULL){
 						if(strcmp(p->username,account)==0){
 							cout<<endl<<"password:";
+							setWordBlue();
 							cin>>password;
+							setWordWhite();
 								if(strcmp(p->pwd,password)==0){
 									result=2;  // 密码正确   找到了数据库中对应的数据赋值给gamer1在有函数login()将账户返回
 									gamer1.ATK=p->ATK;gamer1.blood=p->blood;gamer1.DEF=p->DEF;gamer1.EXP=p->EXP;gamer1.level=p->level;gamer1.next=p->next;strcpy(gamer1.pwd,p->pwd);gamer1.type=p->type;strcpy(gamer1.username,p->username);
+									
 								}	
-								else
+								else{
 									result=0;  // 密码错误
+									setWordRed();
+ 									time--;cout<<endl<<"Wrong Password!! you only have "<<time<<" times to try";
+									setWordWhite();
+									collectEnter();
+								}
 							}
 						
 							p=p->next;
 					 }
-					if(result==4){//循环结束result的值没有被改变说明指定账户没有被找到
-						result=1;
+					if(result=1){//循环结束result的值没有被改变说明指定账户没有被找到
+						cout<<endl<<"account is not exist！please sign up!!"<<endl;
+						collectEnter();
+						jump=1; //需要跳出两次循环就是说还需要在内层循环跳出后立即跳出外层循环 用jump记录状态初始为0
+						break;
 					}
 				 }
-				if(strcmp(menu,two)==0){
+				if(strcmp(menu1,two)==0){
 					gamer1=signUp();
+					break;
 				}
+				if(result==2)   //密码正确
+					break;
+				if(strcmp(menu1,one)==1&&strcmp(menu1,two)==1){
+				cout<<endl<<"menu is not exist！！input again!"<<endl;
+				collectEnter();
+				}
+				}while(strcmp(menu1,one)==1&&strcmp(menu1,two)==1);//循环5结束
+				if(jump==1)
+					break;
 			}
-			if(result==2){//2 密码正确
+			if(result==2){      //2 密码正确
 				system("cls");  //显示方面的一些优化
 					cout<<"Account  Authentication";Sleep(300);
 					cout<<".";Sleep(300);
@@ -420,36 +448,29 @@ struct gamer login(){
 					cout<<".";Sleep(300);
 					cout<<".";Sleep(300);
 					cout<<".";Sleep(300);
-					SetConsoleTextAttribute(handle,
-											FOREGROUND_RED|
-											FOREGROUND_INTENSITY);//设为红色
+					setWordRed();
 					cout<<"      Passed  "<<endl;
-					SetConsoleTextAttribute(handle,
-									FOREGROUND_RED |  //恢复白色
-                                    FOREGROUND_GREEN |  
-                                    FOREGROUND_BLUE|
-									FOREGROUND_INTENSITY);
-
+					setWordWhite();
 				return gamer1;
 			}
-			}
+			}                                                      //循环3结束
 		}
 		if(strcmp(menu,one)==1&&strcmp(menu,two)==1){
-			cout<<endl<<"menu is not exist！！"<<endl;
+			cout<<endl<<"menu is not exist！！input again!"<<endl;
 			collectEnter();
 		}
 		}while(strcmp(menu,one)==1&&strcmp(menu,two)==1) ;  
-	}while(result==4);//result 4 登录未通过
+}while(result==4||result==1);//result 4或1 登录未通过              //循环一
 
-}
-extern void playGmae(gamer * gamer1){
-
+}                                                                  //循环2
+extern void playGame(gamer * gamer1){
+	chapterOne();
 
 
 
 }
 /*
-   HWND GetConsoleHwnd(void)
+   HWND GetConsoleHwnd(void)//获取当前窗口句柄
    {
        #define MY_BUFSIZE 1024 // Buffer size for console window titles.
        HWND hwndFound;         // This is what is returned to the caller.
