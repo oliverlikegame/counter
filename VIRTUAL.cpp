@@ -5,7 +5,7 @@
 * 账户类型分三级两类 一级上帝account（负责初始化世界，拥有一切权限是一类  二级管理员（作弊者 可更改物品控制器  三级玩家均属于二类  
 * 锁定功能 防止破解用户密码 
 * 主要功能 添加删除用户即管理员（权限高的可以操作低的，同级无法操作 第一大类（非客户功能   注册只能注册三级账户即玩家账户  一级二级账户无法注册，预设的;
-*          进入世界，创建角色，升级，爆装备，战斗系统，武器系统，技能系统，血条  （客户功能
+*          进入世界，创建角色，升级，爆装备，战斗系统，武器系统，技能系统，血条  （功能
 * 实现可保存功能
 */
 #include<iostream>
@@ -18,13 +18,13 @@ using namespace std;
 
 int main() {
 	//HWND hWnd=GetConsoleHwnd();//主要用来获取句柄确保焦点在控制台可删
-	fullScreen();
+	//fullScreen();
 	//pic();//动画
 	//cmdResolution("on");//设置控制台大小 on全屏
 	//cmdResolution("off");//off 窗口
 	slowWord("welcome to ");
 	cout<<endl;
-	Sleep(1000);
+	//Sleep(500);
 	setWordCyan();
 	cout<<"               *      *    > > >    *   *      > > > > >   *        *     *        *        "<<endl;
     cout<<"               *     *      %      /      *       %       %        %    ";setWordYellow();cout<<"> <";setWordCyan();cout<<"       *         "<<endl;
@@ -63,13 +63,15 @@ int main() {
 		collectEnter();
 		loading("The World is building");
 		slowWord("tip:enter to start game,Esc to start menu");
+		Sleep(1000);
 		system("cls");
 		 while(1){
-			 char menu3=getchar();
-			 if(menu3==27);//27 Esc ASCII
-				menu(&gamer1);//菜单图案以及功能
-			 if(menu3==10);//10 回车 ASCII
-				playGmae(&gamer1);
+	 		 int menu3=getchar();
+			  if(menu3==10)//10 回车 ASCII
+				playGame(&gamer1);
+			 if(kbhit()==27)//27 Esc ASCII
+				gameMenu(&gamer1);//菜单图案以及功能
+			
 
 
 
