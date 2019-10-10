@@ -6,7 +6,7 @@
 #include <conio.h>
 #include <windows.h>
 using namespace std;
-extern "C" HWND WINAPI GetConsoleWindow();
+//extern "C" HWND WINAPI GetConsoleWindow();
 void HideTheCursor() {
     CONSOLE_CURSOR_INFO cciCursor;
     HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
